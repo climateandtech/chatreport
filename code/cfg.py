@@ -15,7 +15,7 @@ retriever_top_k = 20
 
 retrieval_queries = {
     'general': ["What is the company of the report?", "What sector does the company belong to?", "Where is the company located?",
-                #"What climate-related issues are discussed in this report?"
+                #"What climate-related issues are discussed in this report? bla bla bl"
           ],
     'tcfd_1': "How does the company's board oversee climate-related risks and opportunities?",
     'tcfd_2': "What is the role of management in assessing and managing climate-related risks and opportunities?",
