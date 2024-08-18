@@ -17,7 +17,7 @@ retrieval_queries = {
     'general': ["What is the company of the report?", "What sector does the company belong to?", "Where is the company located?",
                 #"What climate-related issues are discussed in this report? bla bla bl"
           ],
-    'tcfd_1': "How does the company's board oversee climate-related risks and opportunities?",
+    'tcfd_1': "How does the company's board oversee climate-related risks and opportunities, im adding womething?",
     'tcfd_2': "What is the role of management in assessing and managing climate-related risks and opportunities?",
     'tcfd_3': "What are the most relevant climate-related risks and opportunities that the organisation has identified over the short, medium, and long term? Are risks clearly associated with a horizon?",
     'tcfd_4': "How do climate-related risks and opportunities impact the organisation's businesses strategy, economic and financial performance, and financial planning?",
