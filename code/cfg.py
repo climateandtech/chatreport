@@ -15,131 +15,100 @@ retriever_top_k = 20
 
 retrieval_queries = {
     'general': ["What is the company of the report?", "What sector does the company belong to?", "Where is the company located?",
-                #"What climate-related issues are discussed in this report? bla bla bl"
+                #"What carbon emissions-related issues are discussed in this report?"
           ],
-    'tcfd_1': "How does the company's board oversee climate-related risks and opportunities? TEST",
-    'tcfd_2': "What is the role of management in assessing and managing climate-related risks and opportunities?",
-    'tcfd_3': "What are the most relevant climate-related risks and opportunities that the organisation has identified over the short, medium, and long term? Are risks clearly associated with a horizon?",
-    'tcfd_4': "How do climate-related risks and opportunities impact the organisation's businesses strategy, economic and financial performance, and financial planning?",
-    'tcfd_5': "How resilient is the organisation's strategy when considering different climate-related scenarios, including a 2°C target or lower scenario? How resilient is the organisation's strategy when considering climate physical risks?",
-    'tcfd_6': "What processes does the organisation use to identify and assess climate-related risks?",
-    'tcfd_7': "How does the organisation manage climate-related risks?",
-    'tcfd_8': "How are the processes for identifying, assessing, and managing climate-related risks integrated into the organisation's overall risk management?",
-    'tcfd_9': "What metrics does the organisation use to assess climate-related risks and opportunities? How do the metrics help ensure that the performance is in line with its strategy and risk management process?",
-    'tcfd_10': "Does the organisation disclose its Scope 1, Scope 2, and, if appropriate, Scope 3 greenhouse gas (GHG) emissions? What are the related risks and do they differ depending on the scope?",
-    'tcfd_11': "What targets does the organisation use to understand/quantify/benchmark climate-related risks and opportunities? How is the organization performing against these targets?",
+    'tcfd_1': "How does the company’s board oversee carbon emissions-related risks and opportunities in its sustainability strategy?",
+    'tcfd_2': "How detailed and complete are the metrics disclosed in the environment section concerning carbon emissions?",
+    'tcfd_3': "What are the most relevant carbon emissions-related risks and opportunities that the organization has identified over the short, medium, and long term? Are risks clearly associated with a specific timeframe?",
+    'tcfd_4': "Does the organization disclose its Scope 1, Scope 2, and, if appropriate, Scope 3 greenhouse gas (GHG) emissions? What are the related risks, and do they differ depending on the scope?",
+    'tcfd_5': "How are the processes for identifying, assessing, and managing carbon emissions-related risks integrated into the organization’s overall risk management?",
+    'tcfd_6': "How well is the carbon emissions data presented? Does it include visual aids such as infographics, and are key points clearly highlighted?",
+    'tcfd_7': "How clearly does the report define the perimeter of activities and locations covered by the carbon emissions data?",
+    'tcfd_8': "To what extent does the carbon emissions reporting include all of the company’s operations, including international activities?",
+    'tcfd_9': "How thoroughly has the information in the report related to carbon emissions been audited by an external party?",
 }
 
 
 tcfds = {
-    'tcfd_1': "The board's oversight of climate-related risks and opportunities",
-    'tcfd_2': "The management's role in assessing and managing climate-related risks and opportunities",
-    'tcfd_3': "The climate-related risks and opportunities the organisation has identified over the short, medium, and long term",
-    'tcfd_4': "The impact of climate-related risks and opportunities on the organisation's businesses, strategy, and financial planning",
-    'tcfd_5': "The resilience of the organisation's strategy, taking into consideration different climate-related scenarios, including a 2°C or lower scenario",
-    'tcfd_6': "The organisation's processes for identifying and assessing climate-related risks",
-    'tcfd_7': "The organisation's processes for managing climate-related risks",
-    'tcfd_8': "How processes for identifying, assessing, and managing climate-related risks are integrated into the organisation's overall risk management",
-    'tcfd_9': "The metrics used by the organisation to assess climate-related risks and opportunities in line with its strategy and risk management process",
-    'tcfd_10': "Scope 1, Scope 2, and, if appropriate, Scope 3 greenhouse gas (GHG) emissions, and the related risks",
-    'tcfd_11': "The targets used by the organisation to manage climate-related risks and opportunities and performance against targets",
+    'tcfd_1': "The board's oversight of carbon emissions-related risks and opportunities",
+    'tcfd_2': "The completeness and detail of metrics disclosed within the environment section concerning carbon emissions",
+    'tcfd_3': "The carbon emissions-related risks and opportunities the organization has identified over the short, medium, and long term",
+    'tcfd_4': "Scope 1, Scope 2, and, if appropriate, Scope 3 greenhouse gas (GHG) emissions, and the associated risks",
+    'tcfd_5': "How processes for identifying, assessing, and managing carbon emissions-related risks are integrated into the organization's overall risk management",
+    'tcfd_6': "The clarity and effectiveness of the presentation of carbon emissions data, including the use of visual aids such as infographics and the highlighting of key points",
+    'tcfd_7': "The clarity in defining the perimeter of activities and locations covered by the carbon emissions data",
+    'tcfd_8': "The comprehensiveness of the carbon emissions reporting in covering all of the company’s operations, including international activities",
+    'tcfd_9': "The extent to which the carbon emissions data in the report has been audited by an external party",
 }
 
 
 tcfd_assessment = {
-    'tcfd_1': """In describing the board's oversight of climate-related issues, organizations should consider including a discussion of the following:
-1. processes and frequency by which the board and/or board committees (e.g., audit, risk, or other committees) are informed about climate-related issues;
-2. whether the board and/or board committees consider climate-related issues when reviewing and guiding strategy, major plans of action, risk management policies, annual budgets, and business plans as well as setting the organization’s performance objectives, monitoring implementation and performance, and overseeing major capital expenditures, acquisitions, and divestitures; and 
-3. how the board monitors and oversees progress against goals and targets for addressing climate-related issues.
+    'tcfd_1': """In describing the board's oversight of carbon emissions-related risks and opportunities, organizations should consider including a discussion of the following:
+1. processes and frequency by which the board and/or board committees (e.g., audit, risk, or other committees) are informed about carbon emissions-related issues;
+2. whether the board and/or board committees consider carbon emissions-related issues when reviewing and guiding strategy, major plans of action, risk management policies, annual budgets, and business plans as well as setting the organization’s performance objectives, monitoring implementation and performance, and overseeing major capital expenditures, acquisitions, and divestitures; and 
+3. how the board monitors and oversees progress against goals and targets for addressing carbon emissions-related issues.
 """,
-    'tcfd_2': """In describing management's role related to the assessment and management of climate-related issues, organizations should consider including the following information:
-1. whether the organization has assigned climate-related responsibilities to management-level positions or committees; and, if so, whether such management positions or committees report to the board or a committee of the board and whether those responsibilities include assessing and/or managing climate-related issues;
-2. a description of the associated organizational structure(s);
-3. processes by which management is informed about climate-related issues; and
-4. how management (through specific positions and/or management committees) monitors climate-related issues.
+    'tcfd_2': """In describing the metrics disclosed in the environment section concerning carbon emissions, organizations should consider providing the following information:
+1. a comprehensive list of the specific metrics used to measure and report carbon emissions, covering all scopes (Scope 1, Scope 2, and, if appropriate, Scope 3);
+2. the degree of detail and granularity in these metrics, including any benchmarks or targets set by the organization; and
+3. how these metrics align with industry standards or regulations, and how they contribute to the organization’s overall carbon management strategy.
 """,
-    'tcfd_3': """In describing the climate-related risks and opportunities the organization has identified over the short, medium, and long term, organizations should provide the following information:
-1. a description of what they consider to be the relevant short-, medium-, and long-term time horizons, taking into consideration the useful life of the organization's assets or infrastructure and the fact that climate-related issues often manifest themselves over the medium and longer terms;
-2. a description of the specific climate-related issues potentially arising in each time horizon (short, medium, and long term) that could have a material financial impact on the organization; and
-3. a description of the process(es) used to determine which risks and opportunities could have a material financial impact on the organization. 
-Organizations should consider providing a description of their risks and opportunities by sector and/or geography, as appropriate.
+    'tcfd_3': """In describing the carbon emissions-related risks and opportunities the organization has identified over the short, medium, and long term, organizations should consider providing the following information:
+1. a clear description of what the organization considers to be the relevant short-, medium-, and long-term time horizons, taking into consideration the useful life of the organization's assets or infrastructure;
+2. a detailed description of the specific carbon emissions-related issues potentially arising in each time horizon (short, medium, and long term) that could have a material financial impact on the organization; and
+3. an explanation of the process(es) used to determine which risks and opportunities could have a material financial impact on the organization. Organizations should consider providing a description of their risks and opportunities by sector and/or geography, as appropriate.
 """,
-    'tcfd_4': """In describing impact of climate-related risks and opportunities on the organization's businesses, strategy, and financial planning, organizations should discuss how identified climate-related issues have affected their businesses, strategy, and financial planning. 
-Organizations should consider including the impact on their businesses, strategy, and financial planning in the following areas:
-1. Products and services
-2. Supply chain and/or value chain
-3. Adaptation and mitigation activities
-4. Investment in research and development
-5. Operations (including types of operations and location of facilities)
-6. Acquisitions or divestments
-7. Access to capital
-Organizations should describe how climate-related issues serve as an input to their financial planning process, the time period(s) used, and how these risks and opportunities are prioritized. Organizations' disclosures should reflect a holistic picture of the interdependencies among the factors that affect their ability to create value over time. 
-Organizations should describe the impact of climate-related issues on their financial performance (e.g., revenues, costs) and financial position (e.g., assets, liabilities). If climate-related scenarios were used to inform the organization's strategy and financial planning, such scenarios should be described.
-Organizations that have made GHG emissions reduction commitments, operate in jurisdictions that have made such commitments, or have agreed to meet investor expectations regarding GHG emissions reductions should describe their plans for transitioning to a low-carbon economy, which could include GHG emissions targets and specific activities intended to reduce GHG emissions in their operations and value chain or to otherwise support the transition.
+    'tcfd_4': """In describing impact of climate-related risks and opportunities on the organization's businesses, strategy, and financial planning, organizations should discuss how identified climate-related issues have affected their businesses, strategy, and financial planning:
+1. a comprehensive disclosure of Scope 1, Scope 2, and, where relevant, Scope 3 GHG emissions, in line with recognized methodologies such as the GHG Protocol;
+2. an assessment of the risks associated with each scope, and how these risks differ across scopes; and
+3. A description of the methodologies used to calculate or estimate these emissions, ensuring transparency and comparability.
 """,
-    'tcfd_5': """In describing the resilience of the organization's strategy, organizations should describe how resilient their strategies are to climate-related risks and opportunities, taking into consideration a transition to a low-carbon economy consistent with a 2°C or lower scenario and, where relevant to the organization, scenarios consistent with increased physical climate-related risks.
-Organizations should consider discussing:
-1. where they believe their strategies may be affected by climate-related risks and opportunities; 
-2. how their strategies might change to address such potential risks and opportunities;
-3. the potential impact of climate-related issues on financial performance (e.g., revenues, costs) and financial position (e.g., assets, liabilities); and
-4. the climate-related scenarios and associated time horizon(s) considered.
+    'tcfd_5': """In describing the integration of processes for identifying, assessing, and managing carbon emissions-related risks into the organization’s overall risk management, organizations should consider including the following:
+1. a description of how carbon emissions-related risks are incorporated into the broader enterprise risk management framework; 
+2. an explanation of how these risks are prioritized relative to other risks, including the criteria used for determining their significance; and
+3. the specific processes used for monitoring and mitigating these risks over time, including any feedback mechanisms or continuous improvement processes.
 """,
-    'tcfd_6': """In describing the organization's processes for identifying and assessing climate-related risks, organizations should describe their risk management processes for identifying and assessing climate-related risks. An important aspect of this description is how organizations determine the relative significance of climate-related risks in relation to other risks. 
-Organizations should describe whether they consider existing and emerging regulatory requirements related to climate change (e.g., limits on emissions) as well as other relevant factors considered.
-Organizations should also consider disclosing the following:
-1. processes for assessing the potential size and scope of identified climate-related 
-risks and
-2. definitions of risk terminology used or references to existing risk classification 
-frameworks used.
+    'tcfd_6': """In describing the clarity and effectiveness of the presentation of carbon emissions data, organizations should consider discussing:
+1. the use of visual aids such as infographics, charts, and tables to enhance the clarity of carbon emissions data;
+2. the highlighting of key points and metrics to ensure they are easily identifiable and understandable; and 
+3. the overall structure and readability of the report, including the avoidance of dense text blocks that could hinder comprehension.
 """,
-    'tcfd_7': """In describing  the organization's processes for managing climate-related risks, organizations should describe their processes for managing climate-related risks, including how they make decisions to mitigate, transfer, accept, or control those risks. In addition, organizations should describe their processes for prioritizing climate-related risks, including how materiality determinations are made within their organizations. 
+    'tcfd_7': """In describing the perimeter of activities and locations covered by the carbon emissions data, organizations should consider including:
+1. a clear definition of the geographic and operational boundaries covered by the carbon emissions data;
+2. an explanation of any exclusions or limitations in the data coverage, including the rationale for these exclusions; and
+3. a description of how the defined perimeter aligns with the organization’s overall business operations and carbon management strategy. 
 """,
-    'tcfd_8': """In describing how processes for identifying, assessing, and managing climate-related risks are integrated into the organization's overall risk management, organizations should describe how their processes for identifying, assessing, and managing climate-related risks are integrated into their overall risk management.
+    'tcfd_8': """In describing the comprehensiveness of the carbon emissions reporting in covering all of the company’s operations, including international activities, organizations should consider providing:
+1. a detailed account of how the carbon emissions reporting covers all relevant business units, subsidiaries, and international operations;
+2. an assessment of any areas where data might be incomplete or less accurate, along with steps taken to address these gaps; and
+3. a discussion on how the organization ensures that the reporting is consistent across all operations, including those in different jurisdictions or regulatory environments.
 """,
-    'tcfd_9': """In describing the metrics used by the organization to assess climate-related risks and opportunities in line with its strategy and risk management process, organizations should provide the key metrics used to measure and manage climate-related risks and opportunities, as well as metrics consistent with the cross-industry.
-Organizations should consider including metrics on climate-related risks associated with water, energy, land use, and waste management where relevant and applicable.
-Where climate-related issues are material, organizations should consider describing whether and how related performance metrics are incorporated into remuneration policies.
-Where relevant, organizations should provide their internal carbon prices as well as climate-related opportunity metrics such as revenue from products and services designed for a low-carbon economy. 
-Metrics should be provided for historical periods to allow for trend analysis. Where appropriate, organizations should consider providing forward-looking metrics for the cross-industry, consistent with their business or strategic planning time horizons. In addition, where not apparent, organizations should provide a description of the methodologies used to calculate or estimate climate-related metrics.
-""",
-    'tcfd_10': """In disclosing Scope 1, Scope 2, and, if appropriate, Scope 3 greenhouse gas (GHG) emissions, and the related risks, organizations should provide their Scope 1 and Scope 2 GHG emissions independent of a materiality assessment, and, if appropriate, Scope 3 GHG emissions and the related risks. All organizations should consider disclosing Scope 3 GHG emissions.
-GHG emissions should be calculated in line with the GHG Protocol methodology to allow for aggregation and comparability across organizations and jurisdictions. As appropriate, organizations should consider providing related, generally accepted industry-specific GHG efficiency ratios.
-GHG emissions and associated metrics should be provided for historical periods to allow for trend analysis. In addition, where not apparent, organizations should provide a description of the methodologies used to calculate or estimate the metrics.
-""",
-    'tcfd_11': """In describing the targets used by the organization to manage climate-related risks and opportunities and performance against targets, organizations should describe their key climate-related targets such as those related to GHG emissions, water usage, energy usage, etc., in line with the cross-industry, where relevant, and in line with anticipated regulatory requirements or market constraints or other goals. Other goals may include efficiency or financial goals, financial loss tolerances, avoided GHG emissions through the entire product life cycle, or net revenue goals for products and services designed for a low-carbon economy. 
-In describing their targets, organizations should consider including the following:
-1. whether the target is absolute or intensity based;
-2. time frames over which the target applies;
-3. base year from which progress is measured; and
-4. key performance indicators used to assess progress against targets.
-Organizations disclosing medium-term or long-term targets should also disclose associated interim targets in aggregate or by business line, where available.
-Where not apparent, organizations should provide a description of the methodologies used to calculate targets and measures.
+    'tcfd_9': """In describing the extent to which the carbon emissions data in the report has been audited by an external party, organizations should consider including:
+1. a clear statement on which sections of the carbon emissions data have been independently audited, and by whom;
+2. an explanation of the auditing process, including the standards or guidelines followed; and
+3. a discussion of any areas where data was not audited, including the reasons for this and the potential impact on the overall accuracy and reliability of the report.
 """,
 }
 
 # Make QA more critical
 tcfd_guidelines = {
-    'tcfd_1': """8. Please concentrate on the board's direct responsibilities and actions pertaining to climate issues, without discussing the company-wide risk management system or other topics.
+    'tcfd_1': """8. Please focus specifically on the board's direct oversight of carbon emissions-related risks and opportunities within the sustainability strategy. Avoid discussing broader corporate risk management systems or unrelated topics.
 """,
-    'tcfd_2': """8. Please focus on their direct duties related to climate issues, without introducing other topics such as the broader corporate risk management system.
+    'tcfd_2': """8. Please focus on the detail and completeness of the metrics disclosed in the environment section concerning carbon emissions. Do not include broader environmental metrics that do not directly pertain to carbon emissions.
 """,
-    'tcfd_3': """8. Avoid discussing the company-wide risk management system or how these risks and opportunities are identified and managed.
+    'tcfd_3': """8. Please focus solely on the identification of carbon emissions-related risks and opportunities over the specified timeframes (short, medium, and long term). Avoid discussing the company-wide risk management system or unrelated risks.
 """,
-    'tcfd_4': """8. Please do not include the process of risk identification, assessment or management in your answer.
+    'tcfd_4': """8. Confirm the disclosure of Scope 1, Scope 2, and, if appropriate, Scope 3 greenhouse gas (GHG) emissions. Provide any available data or specific figures on these emissions. Focus on the risks directly related to these emissions rather than general climate-related risks.
 """,
-    'tcfd_5': """8. In your response, focus solely on the resilience of strategy in these scenarios, and refrain from discussing processes of risk identification, assessment, or management strategies.
+    'tcfd_5': """8. Please focus on how the processes for identifying, assessing, and managing carbon emissions-related risks are integrated into the organization’s overall risk management. Exclude discussions on broader risk identification or unrelated management strategies.
 """,
-    'tcfd_6': """8. Restrict your answer to the identification and assessment processes, without discussing the management or integration of these risks.
+    'tcfd_6': """8. Please focus on the clarity and effectiveness of the presentation of carbon emissions data, particularly the use of visual aids such as infographics and the clear highlighting of key points. Avoid discussing the content of the data itself.
 """,
-    'tcfd_7': """8. Please focus on the concrete actions and strategies implemented to manage these risks, excluding the process of risk identification or assessment.
+    'tcfd_7': """8. Please provide a clear analysis of how well the report defines the perimeter of activities and locations covered by the carbon emissions data. Avoid discussing any aspects outside the defined perimeter.
 """,
-    'tcfd_8': """8. Please focus on the integration aspect and avoid discussing the process of risk identification, assessment, or the specific management actions taken.
+    'tcfd_8': """8. Please focus on the comprehensiveness of the carbon emissions reporting in covering all of the company’s operations, including international activities. Avoid discussing operations outside the scope of the carbon emissions reporting.
 """,
-    'tcfd_9': """8. Do not include information regarding the organization's general risk identification and assessment methods or their broader corporate strategy and initiatives.
-""",
-    'tcfd_10': """8. Confirm whether the organisation discloses its Scope 1, Scope 2, and, if appropriate, Scope 3 greenhouse gas (GHG) emissions. If so, provide any available data or specific figures on these emissions. Additionally, identify the related risks. The risks should be specific to the GHG emissions rather than general climate-related risks.
-""",
-    'tcfd_11': """8. Please detail the precise targets and avoid discussing the company's general risk identification and assessment methods or their commitment to disclosure through the TCFD.
+    'tcfd_9': """8. Please focus on the extent to which the carbon emissions data in the report has been audited by an external party. Provide details on which sections have been audited and by whom. Avoid discussing non-carbon-related data or general audit practices.
 """,
 }
 system_prompt = "You are an AI assistant in the role of a Senior Equity Analyst with expertise in climate science that analyzes companys' sustainability reports."
