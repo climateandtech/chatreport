@@ -3,12 +3,17 @@ import argparse
 from document import Report
 from reader import Reader
 from user_qa import UserQA
-#import cfg
 import webbrowser
 import asyncio
 from langchain.callbacks import get_openai_callback
+from utils import load_config  # Import the utility function
+from config import Config
 
-#TOP_K = cfg.retriever_top_k
+# Function to load the configuration based on the question set
+def load_question_set(question_set):
+    file_path = f'question_sets/{question_set}.yaml'
+    return config.load_config(file_path)
+
 TOP_K = 20
 
 def main():
@@ -26,7 +31,11 @@ def main():
     parser.add_argument("--answer_length", type=int, default=50)
     parser.add_argument("--detail", action='store_true', default=False)
     parser.add_argument("--top_k", type=int, default=20)
+    parser.add_argument("--question_set", type=str, default='default', help="Specify the question set to use")
     args = parser.parse_args()
+
+    config = Config(f'question_sets/{args.question_set}.yaml')
+
 
     if args.pdf_path:
         report_name = os.path.basename(args.pdf_path)
@@ -60,10 +69,10 @@ def main():
         retrieved_chunks_path=os.path.join(args.retrieved_chunks_dir, report_name)
     )
 
-    if args.user_question == '':
+    import pdb; pdb.set_trace()
+    if args.user_question == None:
         try:
-            reader = Reader(llm_name=args.llm_name, answer_length=str(args.answer_length),)
-                            # qa_prompt="tcfd_summary_source", answer_key_name='SUMMARY', q_name='Q', a_name='Summary')
+            reader = Reader(llm_name=args.llm_name, answer_length=str(args.answer_length))
             result_qa = asyncio.run(reader.qa_with_chat(report_list=[report]))
             result_analysis = asyncio.run(reader.analyze_with_chat(report_list=[report]))
         except Exception as e:
@@ -77,10 +86,9 @@ def main():
                     store_path=None,
                     top_k=TOP_K - 5,
                     db_path=os.path.join(args.vector_db_dir, report_name),
-                    retrieved_chunks_path=os.path.join(args.retrieved_chunks_dir, report_name),
+                    retrieved_chunks_path=os.path.join(args.retrieved_chunks_dir, report_name)
                 )
-                reader = Reader(llm_name=args.llm_name, answer_length=str(args.answer_length),)
-                                #qa_prompt="tcfd_summary_source", answer_key_name='SUMMARY', q_name='Q', a_name='Summary')
+                reader = Reader(llm_name=args.llm_name, answer_length=str(args.answer_length))
                 result_qa = asyncio.run(reader.qa_with_chat(report_list=[report]))
                 result_analysis = asyncio.run(reader.analyze_with_chat(report_list=[report]))
 
@@ -90,7 +98,6 @@ def main():
             f.write(result_qa[0])
         with open(html_path_analysis, 'w') as f:
             f.write(result_analysis[0])
-        # webbrowser.open(html_path)
         with open(os.path.join(args.basic_info_dir, report_name + '_' + args.llm_name + '.json'), 'w') as f:
             json.dump(reader.basic_info_answers[0], f)
         with open(os.path.join(args.answers_dir, report_name + '_' + args.llm_name + '.json'), 'w') as f:
