@@ -210,6 +210,7 @@ if check_password():
         with open(csv_path, "rb") as f:
             st.download_button(
                 label="Download CSV",
+                key="download_csv",
                 data=f,
                 file_name=csv_filename,
                 mime="text/csv"
