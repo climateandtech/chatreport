@@ -1,7 +1,6 @@
 import os
 import re
 import tenacity
-import configparser
 import markdown
 from langchain.llms import OpenAI
 from langchain.chat_models import ChatOpenAI
@@ -24,6 +23,12 @@ load_dotenv()
 # main class for reading the pdf and communicate with openai
 
 TOP_K = 20
+
+
+import os
+import csv
+
+
 
 def remove_brackets(string):
     return re.sub(r'\([^)]*\)', '', string).strip()
@@ -65,7 +70,7 @@ def _find_score(string):
 
 class Reader:
     def __init__(self, llm_name='gpt-3.5-turbo', answer_key_name='ANSWER', max_token=512, q_name='Q', a_name='A',
-                 answer_length='60', root_path='./', gitee_key='', user_name='default', language='en'):
+                 answer_length='60', root_path='./', gitee_key='', user_name='default', language='en', question_set=None):
         self.user_name = user_name  # user name
         self.language = language
         self.root_path = root_path
@@ -83,22 +88,21 @@ class Reader:
         self.assessment_results = []
         self.user_questions = []
         self.user_answers = []
+        self.question_set = question_set
+        self.qa_prompt = 'tcfd_qa_source'
+        self.prompts = cfg.prompts
+        self.system_prompt = cfg.system_prompt
+        self.assessments = question_set['assessments']
+        self.queries = question_set['questions']
+        self.guidelines = question_set['guidelines']
 
-    def load_config(self, question_set):
-        config = Config(f'../question_sets/{question_set}.yaml').get_config()
-        self.prompts = config['prompts']
-        self.assessments = config['assessments']
-        self.queries = config['questions']
-        self.guidelines = config['guidelines']
-
-    async def qa_with_chat(self, report_list, question_set):
-        self.load_config(question_set)
+    async def qa_with_chat(self, report_list):
         htmls = []
         for report_index, report in enumerate(report_list):
             basic_info_prompt = PromptTemplate(template=self.prompts['general'], input_variables=["context"])
             if "turbo" in self.llm_name:
                 message = [
-                    SystemMessage(content=SYSTEM_PROMPT),
+                    SystemMessage(content=self.system_prompt),
                     HumanMessage(content=basic_info_prompt.format(
                         context=_docs_to_string(report.section_text_dict['general'], with_source=False)))
                 ]
@@ -140,7 +144,7 @@ class Reader:
                         current_prompt = tcfd_prompt.format(basic_info=basic_info_string, summaries=_docs_to_string(report.section_text_dict[k], num_docs=num_docs), question=q, guidelines=self.guidelines[k], answer_length=self.answer_length)
                 if "turbo" in self.llm_name:
                     message = [
-                        SystemMessage(content=SYSTEM_PROMPT),
+                        SystemMessage(content=self.system_prompt),
                         HumanMessage(content=current_prompt)
                     ]
                 else:
@@ -211,8 +215,7 @@ class Reader:
             htmls.append(markdown.markdown(questionnaire))
         return htmls
 
-    async def analyze_with_chat(self, report_list, question_set):
-        self.load_config(question_set)
+    async def analyze_with_chat(self, report_list):
         htmls = []
         for report_index, report in enumerate(report_list):
             tcfd_assessment_prompt = PromptTemplate(template=self.prompts['tcfd_assessment'],
@@ -238,7 +241,7 @@ class Reader:
                                                                            with_source=False))
                 if "turbo" in self.llm_name:
                     message = [
-                        SystemMessage(content=SYSTEM_PROMPT),
+                        SystemMessage(content=self.system_prompt),
                         HumanMessage(content=current_prompt)
                     ]
                 else:

@@ -1,0 +1,87 @@
+questions:
+  general:
+    - "What is the company of the report?"
+    - "What sector does the company belong to?"
+    - "Where is the company located?"
+  tcfd_1: "How does the company’s board oversee carbon emissions-related risks and opportunities in its sustainability strategy?"
+  tcfd_2: "How detailed and complete are the metrics disclosed in the environment section concerning carbon emissions?"
+  tcfd_3: "What are the most relevant carbon emissions-related risks and opportunities that the organization has identified over the short, medium, and long term? Are risks clearly associated with a specific timeframe?"
+  tcfd_4: "Does the organization disclose its Scope 1, Scope 2, and, if appropriate, Scope 3 greenhouse gas (GHG) emissions? What are the related risks, and do they differ depending on the scope?"
+  tcfd_5: "How are the processes for identifying, assessing, and managing carbon emissions-related risks integrated into the organization’s overall risk management?"
+  tcfd_6: "How well is the carbon emissions data presented? Does it include visual aids such as infographics, and are key points clearly highlighted?"
+  tcfd_7: "How clearly does the report define the perimeter of activities and locations covered by the carbon emissions data?"
+  tcfd_8: "To what extent does the carbon emissions reporting include all of the company’s operations, including international activities?"
+  tcfd_9: "How thoroughly has the information in the report related to carbon emissions been audited by an external party?"
+
+queries:
+  general:
+    - "What is the company of the report?"
+    - "What sector does the company belong to?"
+    - "Where is the company located?"
+  tcfd_1: "How does the company’s board oversee carbon emissions-related risks and opportunities in its sustainability strategy?"
+  tcfd_2: "How detailed and complete are the metrics disclosed in the environment section concerning carbon emissions?"
+  tcfd_3: "What are the most relevant carbon emissions-related risks and opportunities that the organization has identified over the short, medium, and long term? Are risks clearly associated with a specific timeframe?"
+  tcfd_4: "Does the organization disclose its Scope 1, Scope 2, and, if appropriate, Scope 3 greenhouse gas (GHG) emissions? What are the related risks, and do they differ depending on the scope?"
+  tcfd_5: "How are the processes for identifying, assessing, and managing carbon emissions-related risks integrated into the organization’s overall risk management?"
+  tcfd_6: "How well is the carbon emissions data presented? Does it include visual aids such as infographics, and are key points clearly highlighted?"
+  tcfd_7: "How clearly does the report define the perimeter of activities and locations covered by the carbon emissions data?"
+  tcfd_8: "To what extent does the carbon emissions reporting include all of the company’s operations, including international activities?"
+  tcfd_9: "How thoroughly has the information in the report related to carbon emissions been audited by an external party?"
+
+assessments:
+  tcfd_1: |
+    In describing the board's oversight of carbon emissions-related risks and opportunities, organizations should consider including a discussion of the following:
+    1. Processes and frequency by which the board and/or board committees (e.g., audit, risk, or other committees) are informed about carbon emissions-related issues;
+    2. Whether the board and/or board committees consider carbon emissions-related issues when reviewing and guiding strategy, major plans of action, risk management policies, annual budgets, and business plans, as well as setting the organization’s performance objectives, monitoring implementation and performance, and overseeing major capital expenditures, acquisitions, and divestitures;
+    3. How the board monitors and oversees progress against goals and targets for addressing carbon emissions-related issues.
+  tcfd_2: |
+    In describing the metrics disclosed in the environment section concerning carbon emissions, organizations should consider providing the following information:
+    1. A comprehensive list of the specific metrics used to measure and report carbon emissions, covering all scopes (Scope 1, Scope 2, and, if appropriate, Scope 3);
+    2. The degree of detail and granularity in these metrics, including any benchmarks or targets set by the organization;
+    3. How these metrics align with industry standards or regulations, and how they contribute to the organization’s overall carbon management strategy.
+  tcfd_3: |
+    In describing the carbon emissions-related risks and opportunities the organization has identified over the short, medium, and long term, organizations should consider providing the following information:
+    1. A clear description of what the organization considers to be the relevant short-, medium-, and long-term time horizons, taking into consideration the useful life of the organization's assets or infrastructure;
+    2. A detailed description of the specific carbon emissions-related issues potentially arising in each time horizon (short, medium, and long term) that could have a material financial impact on the organization;
+    3. An explanation of the process(es) used to determine which risks and opportunities could have a material financial impact on the organization. Organizations should consider providing a description of their risks and opportunities by sector and/or geography, as appropriate.
+  tcfd_4: |
+    In disclosing Scope 1, Scope 2, and, if appropriate, Scope 3 greenhouse gas (GHG) emissions, and the related risks, organizations should consider providing the following:
+    1. A comprehensive disclosure of Scope 1, Scope 2, and, where relevant, Scope 3 GHG emissions, in line with recognized methodologies such as the GHG Protocol;
+    2. An assessment of the risks associated with each scope, and how these risks differ across scopes;
+    3. A description of the methodologies used to calculate or estimate these emissions, ensuring transparency and comparability.
+  tcfd_5: |
+    In describing the integration of processes for identifying, assessing, and managing carbon emissions-related risks into the organization’s overall risk management, organizations should consider including the following:
+    1. A description of how carbon emissions-related risks are incorporated into the broader enterprise risk management framework;
+    2. An explanation of how these risks are prioritized relative to other risks, including the criteria used for determining their significance;
+    3. The specific processes used for monitoring and mitigating these risks over time, including any feedback mechanisms or continuous improvement processes.
+  tcfd_6: |
+    In describing the clarity and effectiveness of the presentation of carbon emissions data, organizations should consider discussing:
+    1. The use of visual aids such as infographics, charts, and tables to enhance the clarity of carbon emissions data;
+    2. The highlighting of key points and metrics to ensure they are easily identifiable and understandable;
+    3. The overall structure and readability of the report, including the avoidance of dense text blocks that could hinder comprehension.
+  tcfd_7: |
+    In describing the perimeter of activities and locations covered by the carbon emissions data, organizations should consider including:
+    1. A clear definition of the geographic and operational boundaries covered by the carbon emissions data;
+    2. An explanation of any exclusions or limitations in the data coverage, including the rationale for these exclusions;
+    3. A description of how the defined perimeter aligns with the organization’s overall business operations and carbon management strategy.
+  tcfd_8: |
+    In describing the comprehensiveness of the carbon emissions reporting in covering all of the company’s operations, including international activities, organizations should consider providing:
+    1. A detailed account of how the carbon emissions reporting covers all relevant business units, subsidiaries, and international operations;
+    2. An assessment of any areas where data might be incomplete or less accurate, along with steps taken to address these gaps;
+    3. A discussion on how the organization ensures that the reporting is consistent across all operations, including those in different jurisdictions or regulatory environments.
+  tcfd_9: |
+    In describing the extent to which the carbon emissions data in the report has been audited by an external party, organizations should consider including:
+    1. A clear statement on which sections of the carbon emissions data have been independently audited, and by whom;
+    2. An explanation of the auditing process, including the standards or guidelines followed;
+    3. A discussion of any areas where data was not audited, including the reasons for this and the potential impact on the overall accuracy and reliability of the report.
+
+guidelines:
+  tcfd_1: "Please focus specifically on the board's direct oversight of carbon emissions-related risks and opportunities within the sustainability strategy. Avoid discussing broader corporate risk management systems or unrelated topics."
+  tcfd_2: "Concentrate on the detail and completeness of the metrics disclosed in the environment section concerning carbon emissions. Do not include broader environmental metrics that do not directly pertain to carbon emissions."
+  tcfd_3: "Please focus solely on the identification of carbon emissions-related risks and opportunities over the specified timeframes (short, medium, and long term). Avoid discussing the company-wide risk management system or unrelated risks."
+  tcfd_4: "Confirm the disclosure of Scope 1, Scope 2, and, if appropriate, Scope 3 greenhouse gas (GHG) emissions. Provide any available data or specific figures on these emissions. Focus on the risks directly related to these emissions rather than general climate-related risks."
+  tcfd_5: "Concentrate on how the processes for identifying, assessing, and managing carbon emissions-related risks are integrated into the organization’s overall risk management. Exclude discussions on broader risk identification or unrelated management strategies."
+  tcfd_6: "Focus on the clarity and effectiveness of the presentation of carbon emissions data, particularly the use of visual aids such as infographics and the clear highlighting of key points. Avoid discussing the content of the data itself."
+  tcfd_7: "Please provide a clear analysis of how well the report defines the perimeter of activities and locations covered by the carbon emissions data. Avoid discussing any aspects outside the defined perimeter."
+  tcfd_8: "Concentrate on the comprehensiveness of the carbon emissions reporting in covering all of the company’s operations, including international activities. Avoid discussing operations outside the scope of the carbon emissions reporting."
+  tcfd_9: "Focus on the extent to which the carbon emissions data in the report has been audited by an external party. Provide details on which sections have been audited and by whom. Avoid discussing non-carbon-related data or general audit practices."

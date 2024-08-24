@@ -26,6 +26,11 @@ share/python-wheels/
 *.egg
 MANIFEST
 
+input/
+output/
+data/
+
+
 .env
 
 # PyInstaller

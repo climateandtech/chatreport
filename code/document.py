@@ -31,7 +31,7 @@ COMPRESSION = False
 
 
 class Report:
-    def __init__(self, path=None, url=None, title='', abs='', authers=[], store_path=None, top_k=TOP_K, db_path=None, retrieved_chunks_path=None):
+    def __init__(self, path=None, url=None, title='', abs='', authers=[], store_path=None, top_k=TOP_K, db_path=None, retrieved_chunks_path=None, question_set={}):
         # Init the class on pdf with given path
         config = Config().get_config()
 
@@ -41,7 +41,7 @@ class Report:
         self.url = url # pdf url
         assert ((path is None and url is not None) or (path is not None and url is None)) # only need to pass in an url or a path
         self.store_path = store_path
-        self.queries = Config().get_config()['queries']
+        self.queries = question_set['queries']
         self.top_k = top_k  # retriever top-k
         self.compression = COMPRESSION
         self.section_names = []  # title
