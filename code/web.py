@@ -11,6 +11,10 @@ from dotenv import load_dotenv
 # Load environment variables from a .env file
 load_dotenv()
 
+# This code was authored by Christian Woerle from Climate+Tech.
+# For more information, visit our website at https://www.climateandtech.com.
+# You can also check out Christian's GitHub at https://github.com/suung.
+
 
 
 
