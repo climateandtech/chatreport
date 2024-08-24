@@ -85,53 +85,54 @@ if check_password():
             st.success(f"Uploaded {uploaded_question_set.name}")
             st.experimental_rerun()
 
-        # File uploader for report
-        uploaded_file = st.file_uploader("Upload a Report", type=["pdf"])
+    # File uploader for report
+    uploaded_file = st.file_uploader("Upload a Report", type=["pdf"])
 
-        if uploaded_file is not None:
-            # Sanitize file name
-            sanitized_filename = os.path.basename(uploaded_file.name)
-            report_path = os.path.join(input_dir, sanitized_filename)
-            
-            # Save uploaded file to input directory
-            with open(report_path, "wb") as f:
-                f.write(uploaded_file.getbuffer())
-            st.success(f"Uploaded {sanitized_filename}")
+    if uploaded_file is not None:
+        # Sanitize file name
+        sanitized_filename = os.path.basename(uploaded_file.name)
+        report_path = os.path.join(input_dir, sanitized_filename)
+        
+        # Save uploaded file to input directory
+        with open(report_path, "wb") as f:
+            f.write(uploaded_file.getbuffer())
+        st.success(f"Uploaded {sanitized_filename}")
 
-        # Run the app script with the selected input and question set
-        if st.button("Run Analysis"):
-            with st.spinner("Running analysis..."):
-                # Define the command to run the app script
-                command = [
-                    "python", "code/app.py",  # Adjusted to include the relative path to app.py
-                    "--pdf_path", report_path,
-                    "--question_set", question_set
-                ]
-                # Run the command and capture output
-                result = subprocess.run(command, capture_output=True, text=True)
-                if result.returncode == 0:
-                    st.success("Analysis completed successfully!")
-                    st.text(result.stdout)  # Display standard output
-                    # Copy the generated CSV to the output directory
-                    csv_filename = f"{question_set}_answers_assessments.csv"
-                    csv_path = os.path.join(data_dir, question_set, csv_filename)
-                    if os.path.exists(csv_path):
-                        shutil.copy(csv_path, os.path.join(output_dir, csv_filename))
-                        st.success(f"CSV file generated: {csv_filename}")
-                        # Offer the user to download the CSV
-                        with open(os.path.join(output_dir, csv_filename), "rb") as f:
-                            st.download_button(
-                                label="Download CSV",
-                                data=f,
-                                file_name=csv_filename,
-                                mime="text/csv"
-                            )
-                    else:
-                        st.error("CSV file not found.")
+    # Run the app script with the selected input and question set
+    if st.button("Run Analysis"):
+        with st.spinner("Running analysis..."):
+            # Define the command to run the app script
+            command = [
+                "python", "code/app.py",  # Adjusted to include the relative path to app.py
+                "--pdf_path", report_path,
+                "--question_set", question_set
+            ]
+            # Run the command and capture output
+            result = subprocess.run(command, capture_output=True, text=True)
+            if result.returncode == 0:
+                st.success("Analysis completed successfully!")
+                st.text(result.stdout)  # Display standard output
+                # Copy the generated CSV to the output directory
+                csv_filename = f"{question_set}_answers_assessments.csv"
+                csv_path = os.path.join(data_dir, question_set, csv_filename)
+                if os.path.exists(csv_path):
+                    shutil.copy(csv_path, os.path.join(output_dir, csv_filename))
+                    st.success(f"CSV file generated: {csv_filename}")
+                    # Offer the user to download the CSV
+                    with open(os.path.join(output_dir, csv_filename), "rb") as f:
+                        st.download_button(
+                            label="Download CSV",
+                            data=f,
+                            file_name=csv_filename,
+                            mime="text/csv"
+                        )
                 else:
-                    st.error("Error running analysis.")
-                    st.text(result.stderr)
+                    st.error("CSV file not found.")
+            else:
+                st.error("Error running analysis.")
+                st.text(result.stderr)
 
+    selected_reports = []
     # List report names in the data directory
     if question_set:
         question_set_dir = os.path.join(data_dir, question_set)
