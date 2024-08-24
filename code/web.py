@@ -143,10 +143,7 @@ if check_password():
                     df = pd.read_csv(csv_path)
                     report_names.update(df['Report Name'].unique())
             report_names = list(report_names)
-            st.write(f"Found reports: {report_names}")  # Debugging line
             selected_reports = st.multiselect("Select Reports to Compare", report_names, default=report_names)
-        else:
-            st.warning(f"No data found for the selected question set: {question_set}")
     else:
         st.warning("Please select a question set.")
 
