@@ -75,7 +75,7 @@ def process_and_generate_csv(report_name, combined_answers, combined_assessments
     csv_output_path = os.path.join(base_dir, f"{question_set}_answers_assessments.csv")
     generate_csv(structured_data, csv_output_path)
 
-def create_csv_from_json(data_dir, question_set, output_csv_path):
+def create_csv_from_json(data_dir, question_set, output_dir):
     assessments_dir = os.path.join(data_dir, question_set, "assessment")
     
     # Load assessment data
@@ -95,6 +95,7 @@ def create_csv_from_json(data_dir, question_set, output_csv_path):
             all_data.append(row)
 
     # Write to CSV
+    output_csv_path = os.path.join(data_dir, question_set, output_dir, f"{question_set}_answers_assessments.csv")
     with open(output_csv_path, 'w', newline='') as output_file:
         writer = csv.writer(output_file)
         writer.writerows(all_data)

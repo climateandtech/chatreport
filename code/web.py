@@ -115,10 +115,8 @@ if check_password():
                 st.success("Analysis completed successfully!")
                 st.text(result.stdout)  # Display standard output
                 
-                # Generate the CSV file from JSON data
                 output_csv_path = os.path.join(output_dir, f"{question_set}_answers_assessments.csv")
-                
-                create_csv_from_json(data_dir, question_set, output_csv_path)
+                create_csv_from_json(data_dir, question_set, output_dir)
                 
                 # Copy the generated CSV to the output directory
                 if os.path.exists(output_csv_path):
@@ -141,8 +139,7 @@ if check_password():
     if st.button("Regenerate CSV"):
         with st.spinner("Regenerating CSV..."):
             output_csv_path = os.path.join(output_dir, f"{question_set}_answers_assessments.csv")
-            
-            create_csv_from_json(data_dir, question_set, output_csv_path)
+            create_csv_from_json(data_dir, question_set, output_dir)
             
             if os.path.exists(output_csv_path):
                 st.success(f"CSV file regenerated: {output_csv_path}")
