@@ -1,7 +1,7 @@
-import yaml
 import os
-import csv
 import json
+import csv
+import yaml
 
 def load_config(file_path):
     with open(file_path, 'r') as file:
@@ -12,38 +12,29 @@ def structure_data(report_name, answers, assessments, retrieved_chunks):
     data = []
     for question_id, answer in answers.items():
         assessment = assessments.get(question_id, {})
+        relevant_chunks = retrieved_chunks.get(question_id, {}).values()
+        
         data.append({
             "Report Name": report_name,
             "Question ID": question_id,
-            "Question": answer.get("QUESTION", ""),
-            "Answer": answer.get("ANSWER", ""),
-            "Sources": ", ".join(map(str, answer.get("SOURCES", []))),
-            "Pages": ", ".join(map(str, answer.get("PAGE", []))),
-            "Assessment": assessment.get("ANALYSIS", ""),
-            "Score": assessment.get("SCORE", ""),
-            "Retrieved Chunks": " | ".join(retrieved_chunks.get(question_id, []))
+            "Question": answer.get("question", ""),
+            "Answer": answer.get("answer", ""),
+            "Sources": ", ".join(map(str, answer.get("sources", []))),
+            "Pages": answer.get("pages", ""),  # Ensure this key exists in your JSON
+            "Assessment": assessment.get("analysis", ""),
+            "Score": assessment.get("score", ""),
+            "Retrieved Chunks": " | ".join(relevant_chunks)
         })
     return data
 
-def read_existing_csv(csv_path):
-    if not os.path.exists(csv_path):
-        return []
-    
-    with open(csv_path, 'r', newline='') as csvfile:
-        reader = csv.DictReader(csvfile)
-        return list(reader)
-    
-def generate_csv(data, output_path):
-    existing_data = read_existing_csv(output_path)
-    combined_data = existing_data + data
-    
-    keys = combined_data[0].keys() if combined_data else data[0].keys()
-    with open(output_path, 'w', newline='') as output_file:
-        dict_writer = csv.DictWriter(output_file, fieldnames=keys)
-        dict_writer.writeheader()
-        dict_writer.writerows(combined_data)
+def load_json_data(directory):
+    data = {}
+    for filename in os.listdir(directory):
+        if filename.endswith(".json"):
+            with open(os.path.join(directory, filename), 'r') as file:
+                data[filename] = json.load(file)
+    return data
 
-    
 def load_all_json_files(directory):
     data = []
     for filename in os.listdir(directory):
@@ -71,9 +62,39 @@ def combine_data(all_answers, all_assessments):
     combined_assessments = {k: v for d in all_assessments for k, v in d.items()}
     return combined_answers, combined_assessments
 
+def generate_csv(data, output_path):
+    keys = data[0].keys() if data else []
+    with open(output_path, 'w', newline='') as output_file:
+        dict_writer = csv.DictWriter(output_file, fieldnames=keys)
+        dict_writer.writeheader()
+        dict_writer.writerows(data)
+
 def process_and_generate_csv(report_name, combined_answers, combined_assessments, retrieved_chunks, base_dir):
     structured_data = structure_data(report_name, combined_answers, combined_assessments, retrieved_chunks)
     question_set = os.path.basename(base_dir)
     csv_output_path = os.path.join(base_dir, f"{question_set}_answers_assessments.csv")
     generate_csv(structured_data, csv_output_path)
 
+def create_csv_from_json(data_dir, question_set, output_csv_path):
+    assessments_dir = os.path.join(data_dir, question_set, "assessment")
+    
+    # Load assessment data
+    assessments = load_json_data(assessments_dir)
+
+    all_data = [["Report Name", "TCFD Key", "Question", "Analysis", "Score"]]  # Initialize with header
+    for report_filename, assessment_data in assessments.items():
+        report_name = os.path.splitext(report_filename)[0]  # Extract report name without extension
+        for tcfd_key, tcfd_data in assessment_data.items():
+            row = [
+                report_name,
+                tcfd_key,
+                tcfd_key,  # Assuming the TCFD key is the question
+                tcfd_data.get("ANALYSIS", ""),
+                tcfd_data.get("SCORE", "")
+            ]
+            all_data.append(row)
+
+    # Write to CSV
+    with open(output_csv_path, 'w', newline='') as output_file:
+        writer = csv.writer(output_file)
+        writer.writerows(all_data)

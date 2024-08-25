@@ -1,12 +1,11 @@
 import streamlit as st
 import os
 import subprocess
-import shutil
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
-import yaml
 from dotenv import load_dotenv
+from utils import create_csv_from_json  # Import the function
 
 # Load environment variables from a .env file
 load_dotenv()
@@ -14,10 +13,6 @@ load_dotenv()
 # This code was authored by Christian Woerle from Climate+Tech.
 # For more information, visit our website at https://www.climateandtech.com.
 # You can also check out Christian's GitHub at https://github.com/suung.
-
-
-
-
 
 # Password protection
 def check_password():
@@ -63,7 +58,6 @@ if check_password():
     # Dropdown for selecting question set
     question_set = st.selectbox("Select a Question Set", question_sets)
 
-
     # Download button for the selected question set
     if question_set:
         question_set_path = os.path.join(question_sets_dir, f"{question_set}.yaml")
@@ -88,18 +82,26 @@ if check_password():
     # File uploader for report
     uploaded_file = st.file_uploader("Upload a Report", type=["pdf"])
 
+    # Flag to track if a valid report is uploaded
+    valid_report_uploaded = False
+
     if uploaded_file is not None:
         # Sanitize file name
         sanitized_filename = os.path.basename(uploaded_file.name)
         report_path = os.path.join(input_dir, sanitized_filename)
         
-        # Save uploaded file to input directory
-        with open(report_path, "wb") as f:
-            f.write(uploaded_file.getbuffer())
-        st.success(f"Uploaded {sanitized_filename}")
+        # Check if the report already exists
+        if os.path.exists(report_path):
+            st.warning(f"We already have this report: {sanitized_filename}")
+        else:
+            # Save uploaded file to input directory
+            with open(report_path, "wb") as f:
+                f.write(uploaded_file.getbuffer())
+            st.success(f"Uploaded {sanitized_filename}")
+            valid_report_uploaded = True
 
     # Run the app script with the selected input and question set
-    if st.button("Run Analysis"):
+    if st.button("Run Analysis", disabled=not valid_report_uploaded):
         with st.spinner("Running analysis..."):
             # Define the command to run the app script
             command = [
@@ -112,18 +114,21 @@ if check_password():
             if result.returncode == 0:
                 st.success("Analysis completed successfully!")
                 st.text(result.stdout)  # Display standard output
+                
+                # Generate the CSV file from JSON data
+                output_csv_path = os.path.join(output_dir, f"{question_set}_answers_assessments.csv")
+                
+                create_csv_from_json(data_dir, question_set, output_csv_path)
+                
                 # Copy the generated CSV to the output directory
-                csv_filename = f"{question_set}_answers_assessments.csv"
-                csv_path = os.path.join(data_dir, question_set, csv_filename)
-                if os.path.exists(csv_path):
-                    shutil.copy(csv_path, os.path.join(output_dir, csv_filename))
-                    st.success(f"CSV file generated: {csv_filename}")
+                if os.path.exists(output_csv_path):
+                    st.success(f"CSV file generated: {output_csv_path}")
                     # Offer the user to download the CSV
-                    with open(os.path.join(output_dir, csv_filename), "rb") as f:
+                    with open(output_csv_path, "rb") as f:
                         st.download_button(
                             label="Download CSV",
                             data=f,
-                            file_name=csv_filename,
+                            file_name=os.path.basename(output_csv_path),
                             mime="text/csv"
                         )
                 else:
@@ -132,10 +137,29 @@ if check_password():
                 st.error("Error running analysis.")
                 st.text(result.stderr)
 
+    # Button to retrigger CSV generation
+    if st.button("Regenerate CSV"):
+        with st.spinner("Regenerating CSV..."):
+            output_csv_path = os.path.join(output_dir, f"{question_set}_answers_assessments.csv")
+            
+            create_csv_from_json(data_dir, question_set, output_csv_path)
+            
+            if os.path.exists(output_csv_path):
+                st.success(f"CSV file regenerated: {output_csv_path}")
+                with open(output_csv_path, "rb") as f:
+                    st.download_button(
+                        label="Download CSV",
+                        data=f,
+                        file_name=os.path.basename(output_csv_path),
+                        mime="text/csv"
+                    )
+            else:
+                st.error("CSV file not found.")
+
     selected_reports = []
     # List report names in the data directory
     if question_set:
-        question_set_dir = os.path.join(data_dir, question_set)
+        question_set_dir = os.path.join(data_dir, question_set, 'output')
         if os.path.exists(question_set_dir):
             report_names = set()
             for file in os.listdir(question_set_dir):
@@ -151,14 +175,13 @@ if check_password():
     if selected_reports:
         data_frames = []
         for report in selected_reports:
-            for file in os.listdir(question_set_dir):
-                if file.endswith(f"{question_set}_answers_assessments.csv"):
-                    csv_path = os.path.join(question_set_dir, file)
-                    df = pd.read_csv(csv_path)
-                    if report in df['Report Name'].unique():
-                        df = df[df['Report Name'] == report]
-                        df['Report'] = report
-                        data_frames.append(df)
+            csv_path = os.path.join(data_dir, question_set, output_dir, f"{question_set}_answers_assessments.csv")
+            if os.path.exists(csv_path):
+                df = pd.read_csv(csv_path)
+                if report in df['Report Name'].unique():
+                    df = df[df['Report Name'] == report]
+                    df['Report'] = report
+                    data_frames.append(df)
 
         if data_frames:
             combined_df = pd.concat(data_frames)
@@ -167,7 +190,7 @@ if check_password():
             # Plot the scores per TCFD and report using a radar chart
             if "Score" in combined_df.columns:
                 st.subheader("Scores per TCFD and Report")
-                radar_data = combined_df.pivot(index='Question ID', columns='Report', values='Score').fillna(0)
+                radar_data = combined_df.pivot(index='TCFD Key', columns='Report', values='Score').fillna(0)
                 st.write(radar_data)  # Debugging line to check the data
 
                 # Create radar chart using Matplotlib
@@ -200,6 +223,8 @@ if check_password():
                 ax.legend(loc='upper right', bbox_to_anchor=(1.1, 1.1))
 
                 st.pyplot(fig)
+        else:
+            st.warning("No reports analyzed yet in this question set.")
     else:
         st.warning("No reports selected for comparison.")
 
@@ -244,4 +269,3 @@ footer = """
 </div>
 """
 st.markdown(footer, unsafe_allow_html=True)
-
