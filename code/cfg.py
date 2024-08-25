@@ -1,3 +1,10 @@
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+api_key = os.getenv('API_KEY')
+
+
 # key: topic, value: list of search key
 # temperature for generation
 temperature = 0.

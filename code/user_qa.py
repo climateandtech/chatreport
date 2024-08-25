@@ -13,11 +13,13 @@ from reader import _find_answer, _find_sources, _docs_to_string, remove_brackets
 import cfg
 import json
 import tiktoken
+from dotenv import load_dotenv
+
+# Load environment variables from a .env file
+load_dotenv()
 
 config = configparser.ConfigParser()
 config.read('apikey.ini')
-chat_api_list = config.get('OpenAI', 'OPENAI_API_KEYS')[1:-1].replace('\'', '').split(',')
-os.environ["OPENAI_API_KEY"] = chat_api_list[0]
 
 TOP_K = cfg.retriever_top_k
 PROMPTS = cfg.prompts

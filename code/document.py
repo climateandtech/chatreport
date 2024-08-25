@@ -14,46 +14,34 @@ from langchain.vectorstores import FAISS, Pinecone
 from langchain.embeddings.openai import OpenAIEmbeddings
 import time
 import requests
-import configparser
 import os
 
-config = configparser.ConfigParser()
-config.read('apikey.ini')
-chat_api_list = config.get('OpenAI', 'OPENAI_API_KEYS')[1:-1].replace('\'', '').split(',')
-os.environ["OPENAI_API_KEY"] = chat_api_list[0]
+from dotenv import load_dotenv
+from config import Config
+
+# Load environment variables from a .env file
+load_dotenv()
+
+
 
 TOP_K = 20
 CHUNK_SIZE = 500
 CHUNK_OVERLAP = 20
 COMPRESSION = False
-QUERIES = {
-    'general': ["What is the company of the report?", "What sector does the company belong to?", "Where is the company located?",
-                #"What climate-related issues are discussed in this report?"
-          ],
-    'tcfd_1': "How does the company's board oversee climate-related risks and opportunities?",
-    'tcfd_2': "What is the role of management in assessing and managing climate-related risks and opportunities?",
-    'tcfd_3': "What are the most relevant climate-related risks and opportunities that the organisation has identified over the short, medium, and long term? Are risks clearly associated with a horizon?",
-    'tcfd_4': "How do climate-related risks and opportunities impact the organisation's businesses strategy, economic and financial performance, and financial planning?",
-    'tcfd_5': "How resilient is the organisation's strategy when considering different climate-related scenarios, including a 2°C target or lower scenario? How resilient is the organisation's strategy when considering climate physical risks?",
-    'tcfd_6': "What processes does the organisation use to identify and assess climate-related risks?",
-    'tcfd_7': "How does the organisation manage climate-related risks?",
-    'tcfd_8': "How are the processes for identifying, assessing, and managing climate-related risks integrated into the organisation's overall risk management?",
-    'tcfd_9': "What metrics does the organisation use to assess climate-related risks and opportunities? How do the metrics help ensure that the performance is in line with its strategy and risk management process?",
-    'tcfd_10': "Does the organisation disclose its Scope 1, Scope 2, and, if appropriate, Scope 3 greenhouse gas (GHG) emissions? What are the related risks and do they differ depending on the scope?",
-    'tcfd_11': "What targets does the organisation use to understand/quantify/benchmark climate-related risks and opportunities? How is the organization performing against these targets?",
-}
 
 
 class Report:
-    def __init__(self, path=None, url=None, title='', abs='', authers=[], store_path=None, top_k=TOP_K, db_path=None, retrieved_chunks_path=None):
+    def __init__(self, path=None, url=None, title='', abs='', authers=[], store_path=None, top_k=TOP_K, db_path=None, retrieved_chunks_path=None, question_set={}):
         # Init the class on pdf with given path
+        config = Config().get_config()
+
         self.chunks = []
         self.page_idx = []
         self.path = path  # pdf path
         self.url = url # pdf url
         assert ((path is None and url is not None) or (path is not None and url is None)) # only need to pass in an url or a path
         self.store_path = store_path
-        self.queries = QUERIES
+        self.queries = question_set['queries']
         self.top_k = top_k  # retriever top-k
         self.compression = COMPRESSION
         self.section_names = []  # title
@@ -176,8 +164,8 @@ class Report:
     # recongnize the title by fontsize
     def get_chapter_names(self, ):
         # # open pdf
-        doc = fitz.open(self.path)
-        text_list = [page.get_text() for page in doc]
+        with fitz.open(self.path) as doc:
+            text_list = [page.get_text() for page in doc]
         all_text = ''
         for text in text_list:
             all_text += text
@@ -197,44 +185,44 @@ class Report:
         return chapter_names
 
     def get_title(self):
-        doc = self.pdf
-        max_font_size = 0  # init fontsize 0
-        max_string = ""  # init max string
-        max_font_sizes = [0]
-        for page in doc:  # go through all pages
-            text = page.get_text("dict")  # acquire the info in the page
-            blocks = text["blocks"]  # acquire text block
-            for block in blocks:  # go through all blocks
-                if block["type"] == 0 and len(block['lines']):  # if str
-                    if len(block["lines"][0]["spans"]):
-                        font_size = block["lines"][0]["spans"][0]["size"]  # acquire fontsize
-                        max_font_sizes.append(font_size)
-                        if font_size > max_font_size:
-                            max_font_size = font_size  # update max fontsize
-                            max_string = block["lines"][0]["spans"][0]["text"]  # update the title str
-        max_font_sizes.sort()
-        print("max_font_sizes", max_font_sizes[-10:])
-        cur_title = ''
-        for page in doc:  # go through all pages
-            text = page.get_text("dict")
-            blocks = text["blocks"]
-            for block in blocks:
-                if block["type"] == 0 and len(block['lines']):
-                    if len(block["lines"][0]["spans"]):
-                        cur_string = block["lines"][0]["spans"][0]["text"]
-                        font_flags = block["lines"][0]["spans"][0]["flags"]
-                        font_size = block["lines"][0]["spans"][0]["size"]
-                        # print(font_size)
-                        if abs(font_size - max_font_sizes[-1]) < 0.3 or abs(font_size - max_font_sizes[-2]) < 0.3:
-                            # print("The string is bold.", max_string, "font_size:", font_size, "font_flags:", font_flags)
-                            if len(cur_string) > 4:
+        with fitz.open(self.path) as doc:
+            max_font_size = 0  # init fontsize 0
+            max_string = ""  # init max string
+            max_font_sizes = [0]
+            for page in doc:  # go through all pages
+                text = page.get_text("dict")  # acquire the info in the page
+                blocks = text["blocks"]  # acquire text block
+                for block in blocks:  # go through all blocks
+                    if block["type"] == 0 and len(block['lines']):  # if str
+                        if len(block["lines"][0]["spans"]):
+                            font_size = block["lines"][0]["spans"][0]["size"]  # acquire fontsize
+                            max_font_sizes.append(font_size)
+                            if font_size > max_font_size:
+                                max_font_size = font_size  # update max fontsize
+                                max_string = block["lines"][0]["spans"][0]["text"]  # update the title str
+            max_font_sizes.sort()
+            print("max_font_sizes", max_font_sizes[-10:])
+            cur_title = ''
+            for page in doc:  # go through all pages
+                text = page.get_text("dict")
+                blocks = text["blocks"]
+                for block in blocks:
+                    if block["type"] == 0 and len(block['lines']):
+                        if len(block["lines"][0]["spans"]):
+                            cur_string = block["lines"][0]["spans"][0]["text"]
+                            font_flags = block["lines"][0]["spans"][0]["flags"]
+                            font_size = block["lines"][0]["spans"][0]["size"]
+                            # print(font_size)
+                            if abs(font_size - max_font_sizes[-1]) < 0.3 or abs(font_size - max_font_sizes[-2]) < 0.3:
                                 # print("The string is bold.", max_string, "font_size:", font_size, "font_flags:", font_flags)
-                                if cur_title == '':
-                                    cur_title += cur_string
-                                else:
-                                    cur_title += ' ' + cur_string
-                                    # break
-        title = cur_title.replace('\n', ' ')
+                                if len(cur_string) > 4:
+                                    # print("The string is bold.", max_string, "font_size:", font_size, "font_flags:", font_flags)
+                                    if cur_title == '':
+                                        cur_title += cur_string
+                                    else:
+                                        cur_title += ' ' + cur_string
+                                        # break
+            title = cur_title.replace('\n', ' ')
         return title
 
     # def _get_all_page_index(self):
@@ -286,7 +274,7 @@ class Report:
             self.page_idx.extend([i + 1] * len(page_chunks))
             self.chunks.extend(page_chunks)
         if os.path.exists(db_path):
-            doc_search = FAISS.load_local(db_path, embeddings=embeddings)
+            doc_search = FAISS.load_local(db_path, embeddings=embeddings, allow_dangerous_deserialization=True)
         else:
             doc_search = FAISS.from_texts(self.chunks, embeddings,
                                           metadatas=[{"source": str(i), "page": str(page_idx)} for i, page_idx in
@@ -315,4 +303,3 @@ def search_page(content, search_list):
         return True
     else:
         return False
-
