@@ -16,7 +16,8 @@ import tiktoken
 
 from config import Config
 from dotenv import load_dotenv
-
+from langchain_ollama.chat_models import ChatOllama
+import traceback
 # Load environment variables from a .env file
 load_dotenv()
 
@@ -106,12 +107,30 @@ class Reader:
                     HumanMessage(content=basic_info_prompt.format(
                         context=_docs_to_string(report.section_text_dict['general'], with_source=False)))
                 ]
-                llm = ChatOpenAI(temperature=0, max_tokens=256)
+                if os.getenv("LLM_TYPE") == "ollama":
+                    llm = ChatOllama(
+                        temperature=0, 
+                        max_tokens=256, 
+                        base_url=os.getenv("OPENAI_API_BASE"),
+                        model=os.getenv("OLLAMA_MODEL")
+                    )
+                elif "turbo" in self.llm_name:
+                    llm = ChatOpenAI(temperature=0, max_tokens=256)
+                else:
+                    llm = OpenAI(temperature=0, max_tokens=256)
                 output_text = llm(message).content
             else:
                 message = basic_info_prompt.format(
                     context=_docs_to_string(report.section_text_dict['general'], with_source=False))
-                llm = OpenAI(temperature=0, max_tokens=256)
+                if os.getenv("LLM_TYPE") == "ollama":
+                    llm = ChatOllama(
+                                temperature=0, 
+                                max_tokens=512, 
+                                base_url=os.getenv("OPENAI_API_BASE"),
+                                model=os.getenv("OLLAMA_MODEL")
+                            )
+                else:
+                    llm = OpenAI(temperature=0, max_tokens=256)
                 output_text = llm(message)
             print(output_text)
             try:
@@ -151,7 +170,14 @@ class Reader:
                     message = current_prompt
                 keys.append(k)
                 messages.append(message)
-            if "turbo" in self.llm_name:
+            if os.getenv("LLM_TYPE") == "ollama":
+                llm = ChatOllama(
+                    temperature=0, 
+                    max_tokens=512, 
+                    base_url=os.getenv("OPENAI_API_BASE"),
+                    model=os.getenv("OLLAMA_MODEL")
+                )
+            elif "turbo" in self.llm_name:
                 llm = ChatOpenAI(temperature=0, max_tokens=512)
             else:
                 llm = OpenAI(temperature=0, max_tokens=512)
@@ -248,10 +274,15 @@ class Reader:
                     message = current_prompt
                 keys.append(k)
                 messages.append(message)
-            if "turbo" in self.llm_name:
-                llm = ChatOpenAI(temperature=0, max_tokens=512)
+            if os.getenv("LLM_TYPE") == "ollama":
+                llm = ChatOllama(
+                    temperature=0, 
+                    max_tokens=512, 
+                    base_url=os.getenv("OPENAI_API_BASE"),
+                    model=os.getenv("OLLAMA_MODEL")
+                )
             else:
-                llm = OpenAI(temperature=0, max_tokens=512)
+                llm = ChatOpenAI(temperature=0, max_tokens=512)
             outputs = await llm.agenerate(messages)
             output_texts = {k: g[0].text for k, g in zip(keys, outputs.generations)}
 

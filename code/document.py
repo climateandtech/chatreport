@@ -12,9 +12,13 @@ import pickle
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import FAISS, Pinecone
 from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain_ollama import OllamaEmbeddings
+
 import time
 import requests
 import os
+
+
 
 from dotenv import load_dotenv
 from config import Config
@@ -259,7 +263,14 @@ class Report:
 
     # _get_retriever load/store database from/to self.db_path
     def _get_retriever(self, db_path):
-        embeddings = OpenAIEmbeddings()
+        import pdb; pdb.set_trace()
+        if os.getenv("LLM_TYPE") == "ollama":
+            embeddings = OllamaEmbeddings(
+                model=os.getenv("OPENAI_EMBEDDING_MODEL", "llama3"),
+                base_url=os.getenv("OPENAI_API_BASE")
+            )
+        else:
+            embeddings = OpenAIEmbeddings(model=os.getenv("OPENAI_EMBEDDING_MODEL", "text-embedding-ada-002"))
         text_splitter = RecursiveCharacterTextSplitter(
             # split by ["\n\n", "\n", " "].
             chunk_size=CHUNK_SIZE,
